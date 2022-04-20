@@ -41,16 +41,4 @@ export class TodoService {
     });
     return task;
   }
-
-  addCategory(key, category) {
-    this._categoryStorage?.set(key, category);
-  }
-
-  getAllCategories() {
-    const category: any = [];
-    this._categoryStorage?.forEach((key, value, index) => {
-      category.push({ key: value, value: key });
-    });
-    return category;
-  }
 }
