@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { v4 as uuidv4 } from 'uuid';
+import { TodoService } from '../services/todo.service';
 
 @Component({
   selector: 'app-add-new-task',
@@ -14,7 +16,10 @@ export class AddNewTaskPage implements OnInit {
   taskCategory;
   taskObject;
 
-  constructor(public modalCtrl: ModalController) {}
+  constructor(
+    public modalCtrl: ModalController,
+    public todoService: TodoService
+  ) {}
 
   ngOnInit() {}
 
@@ -33,6 +38,12 @@ export class AddNewTaskPage implements OnInit {
       itemPriority: this.taskPriority,
       itemCategory: this.taskCategory,
     };
+    const uid = uuidv4();
+    if (uid) {
+      await this.todoService.addTask(uid, this.taskObject);
+    } else {
+      console.log('Error: Cannot save empty task');
+    }
     this.dismiss();
   }
 }
