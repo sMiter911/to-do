@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { AddNewTaskPage } from '../add-new-task/add-new-task.page';
 
 @Component({
   selector: 'app-home',
@@ -6,34 +8,26 @@ import { Component } from '@angular/core';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  todoList = [
-    {
-      itemName: 'Coding',
-      itemDueDate: '2022-04-05',
-      itemPriority: 'high',
-      itemCategory: 'Work',
-    },
-    {
-      itemName: 'Assignment',
-      itemDueDate: '2022-05-01',
-      itemPriority: 'medium',
-      itemCategory: 'School',
-    },
-    {
-      itemName: 'Shopping',
-      itemDueDate: '2022-04-27',
-      itemPriority: 'low',
-      itemCategory: 'Personal',
-    },
-    {
-      itemName: 'Gym',
-      itemDueDate: '2022-04-27',
-      itemPriority: 'low',
-      itemCategory: 'Personal',
-    },
-  ];
+  todoList = [];
 
   today: number = Date.now();
 
-  constructor() {}
+  constructor(public modalCtrl: ModalController) {}
+
+  async addTask() {
+    const modal = await this.modalCtrl.create({
+      component: AddNewTaskPage,
+    });
+
+    modal.onDidDismiss().then((dataReturned) => {
+      console.log(dataReturned.data);
+      this.todoList.push(dataReturned.data);
+    });
+
+    return await modal.present();
+  }
+
+  async delete(index) {
+    this.todoList.splice(index, 1);
+  }
 }
