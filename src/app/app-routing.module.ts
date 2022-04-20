@@ -19,6 +19,10 @@ const routes: Routes = [
     path: 'update-task',
     loadChildren: () => import('./update-task/update-task.module').then( m => m.UpdateTaskPageModule)
   },
+  {
+    path: 'add-category',
+    loadChildren: () => import('./add-category/add-category.module').then( m => m.AddCategoryPageModule)
+  },
 ];
 
 @NgModule({

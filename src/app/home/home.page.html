@@ -44,11 +44,11 @@
     </ion-card-content>
     <ion-row>
       <ion-item>
-        <ion-icon name="share-outline"></ion-icon>
-        <p>Share</p>
+        <ion-icon name="checkmark-done-circle-outline"></ion-icon>
+        <p>Done</p>
       </ion-item>
       <ion-item (click)="update(item)">
-        <ion-icon name="checkmark-done-outline"></ion-icon>
+        <ion-icon name="create-outline"></ion-icon>
         <p>Update</p>
       </ion-item>
       <ion-item (click)="delete(item.key)">
@@ -58,8 +58,16 @@
     </ion-row>
   </ion-card>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="addTask()">
+    <ion-fab-button>
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button (click)="addTask()">
+        <ion-icon name="document-text-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button (click)="addCategory()">
+        <ion-icon name="duplicate-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
   </ion-fab>
 </ion-content>

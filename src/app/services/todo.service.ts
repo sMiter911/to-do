@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 
@@ -5,32 +6,51 @@ import { Storage } from '@ionic/storage-angular';
   providedIn: 'root',
 })
 export class TodoService {
+  private _taskStorage: Storage | null = null;
+  private _categoryStorage: Storage | null = null;
+
   constructor(private storage: Storage) {
     this.init();
   }
 
   async init() {
-    await this.storage.create();
+    const taskStorage = await this.storage.create();
+    const categoryStorage = await this.storage.create();
+
+    this._taskStorage = taskStorage;
+    this._categoryStorage = categoryStorage;
   }
 
   addTask(key, value) {
-    this.storage.set(key, value);
+    this._taskStorage?.set(key, value);
   }
 
   deleteTask(key) {
-    this.storage.remove(key);
+    this._taskStorage?.remove(key);
   }
 
   updateTask(key, task) {
-    this.storage.set(key, task);
+    this._taskStorage?.set(key, task);
     this.getAllTasks();
   }
 
   getAllTasks() {
     const task: any = [];
-    this.storage.forEach((key, value, index) => {
+    this._taskStorage?.forEach((key, value, index) => {
       task.push({ key: value, value: key });
     });
     return task;
+  }
+
+  addCategory(key, category) {
+    this._categoryStorage?.set(key, category);
+  }
+
+  getAllCategories() {
+    const category: any = [];
+    this._categoryStorage?.forEach((key, value, index) => {
+      category.push({ key: value, value: key });
+    });
+    return category;
   }
 }

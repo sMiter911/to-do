@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { AddCategoryPage } from '../add-category/add-category.page';
 import { AddNewTaskPage } from '../add-new-task/add-new-task.page';
 import { TodoService } from '../services/todo.service';
 import { UpdateTaskPage } from '../update-task/update-task.page';
@@ -33,8 +34,21 @@ export class HomePage {
     return await modal.present();
   }
 
+  async addCategory() {
+    const modal = await this.modalCtrl.create({
+      component: AddCategoryPage,
+    });
+
+    modal.onDidDismiss().then(() => {
+      this.getAllTasks();
+    });
+
+    return await modal.present();
+  }
+
   getAllTasks() {
     this.todoList = this.todoService.getAllTasks();
+    console.log(this.todoList);
   }
 
   async delete(key) {
