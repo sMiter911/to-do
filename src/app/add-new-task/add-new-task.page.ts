@@ -40,7 +40,7 @@ export class AddNewTaskPage implements OnInit {
     };
     const uid = uuidv4();
     if (uid) {
-      await this.todoService.addTask(uid, this.taskObject);
+      await this.todoService.addTask(this.taskObject);
     } else {
       console.log('Error: Cannot save empty task');
     }
