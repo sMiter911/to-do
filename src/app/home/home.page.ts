@@ -11,7 +11,7 @@ import { UpdateTaskPage } from '../update-task/update-task.page';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  todoList = [];
+  items = this.todoService.todos;
 
   today: number = Date.now();
 
@@ -47,11 +47,11 @@ export class HomePage {
   }
 
   getAllTasks() {
-    this.todoList = this.todoService.getAllTasks();
-    console.log(this.todoList);
+    this.todoService.getAllTasks();
   }
 
   async delete(key) {
+    console.log(key);
     await this.todoService.deleteTask(key);
     this.getAllTasks();
   }

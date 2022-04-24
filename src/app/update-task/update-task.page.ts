@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { TodoService } from '../services/todo.service';
@@ -26,10 +27,10 @@ export class UpdateTaskPage implements OnInit {
   }
 
   fillData() {
-    this.taskName = this.task.value.itemName;
-    this.taskDueDate = this.task.value.itemDueDate;
-    this.taskPriority = this.task.value.itemPriority;
-    this.taskCategory = this.task.value.itemCategory;
+    this.taskName = this.task.task;
+    this.taskDueDate = this.task.due_date;
+    this.taskPriority = this.task.priority;
+    this.taskCategory = this.task.category;
   }
 
   selectCategory(index) {
@@ -42,13 +43,13 @@ export class UpdateTaskPage implements OnInit {
 
   async updateTask() {
     this.taskObject = {
-      itemName: this.taskName,
-      itemDueDate: this.taskDueDate,
-      itemPriority: this.taskPriority,
-      itemCategory: this.taskCategory,
+      id: this.task.id,
+      task: this.taskName,
+      due_date: this.taskDueDate,
+      priority: this.taskPriority,
+      category: this.taskCategory,
     };
-    const uid = this.task.key;
-    await this.todoService.updateTask(uid, this.taskObject);
+    await this.todoService.updateTask(this.taskObject);
     this.dismiss();
   }
 }

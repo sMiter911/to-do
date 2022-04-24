@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/member-ordering */
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Injectable } from '@angular/core';
 import { LoadingController, ToastController } from '@ionic/angular';
@@ -7,7 +9,9 @@ import {
   Session,
   SupabaseClient,
 } from '@supabase/supabase-js';
+import { Observable, Subject } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { Category } from '../models/category';
 import { Todo } from '../models/todo';
 
 export interface Profile {
@@ -21,6 +25,8 @@ export interface Profile {
 })
 export class TodoService {
   private supabase: SupabaseClient;
+  _todos = new Subject<Todo[]>();
+  _categories = new Subject<Category[]>();
 
   constructor(
     private loadingCtrl: LoadingController,
@@ -99,8 +105,53 @@ export class TodoService {
       due_date: task.due_date,
       user_id: this.supabase.auth.user()?.id,
     };
-    const result = await this.supabase.from('task_table').insert(newTask);
+    const { data, error } = await this.supabase
+      .from('task_table')
+      .insert([newTask]);
+  }
 
-    console.log(task);
+  get todos(): Observable<Todo[]> {
+    return this._todos.asObservable();
+  }
+  get categories(): Observable<Category[]> {
+    return this._categories.asObservable();
+  }
+
+  async getAllTasks() {
+    const { data, error } = await this.supabase.from('task_table').select(`*`);
+    this._todos.next(data);
+  }
+
+  async deleteTask(id) {
+    const { data, error } = await this.supabase
+      .from('task_table')
+      .delete()
+      .eq('id', id);
+  }
+
+  async updateTask(task: Todo) {
+    const { data, error } = await this.supabase
+      .from('task_table')
+      .update(task)
+      .eq('id', task.id);
+  }
+
+  async addCategory(category: string) {
+    const newCategory = {
+      category,
+      user_id: this.supabase.auth.user()?.id,
+    };
+    const { data, error } = await this.supabase
+      .from('categories')
+      .insert([newCategory]);
+  }
+
+  async getAllCategories() {
+    const { data, error } = await this.supabase.from('categories').select(`*`);
+    this._categories.next(data);
+  }
+
+  async getCategory(id) {
+    console.log(id);
   }
 }
