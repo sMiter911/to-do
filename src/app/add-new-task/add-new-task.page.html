@@ -43,7 +43,7 @@
     <ion-item>
       <ion-chip
         *ngFor="let category of categories | async; let i = index"
-        (click)="selectCategory(i)"
+        (click)="selectCategory(category.category)"
       >
         <ion-label>{{category.category}}</ion-label>
       </ion-chip>

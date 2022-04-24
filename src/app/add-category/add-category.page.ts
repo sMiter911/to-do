@@ -36,15 +36,13 @@ export class AddCategoryPage implements OnInit {
     this.dismiss();
   }
 
-  async removeCategory(index) {
-    this.dismiss();
+  async deleteCategory(item) {
+    console.log(item);
+    this.todoService.deleteCategory(item);
+    this.getAllCategories();
   }
 
-  async deleteCategories() {
+  async deleteCategories(index) {
     this.dismiss();
-  }
-
-  selectCategory(index) {
-    console.log(this.categories[index]);
   }
 }

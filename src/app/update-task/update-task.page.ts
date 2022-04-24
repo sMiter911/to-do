@@ -10,7 +10,7 @@ import { TodoService } from '../services/todo.service';
 })
 export class UpdateTaskPage implements OnInit {
   @Input() task;
-  categories = ['work', 'school', 'personal'];
+  categories = this.todoService.categories;
   taskName;
   taskDueDate;
   taskPriority;
@@ -20,10 +20,16 @@ export class UpdateTaskPage implements OnInit {
   constructor(
     public modalCtrl: ModalController,
     public todoService: TodoService
-  ) {}
+  ) {
+    this.getAllCategories();
+  }
 
   ngOnInit() {
     this.fillData();
+  }
+
+  async getAllCategories() {
+    this.todoService.getAllCategories();
   }
 
   fillData() {
@@ -33,8 +39,8 @@ export class UpdateTaskPage implements OnInit {
     this.taskCategory = this.task.category;
   }
 
-  selectCategory(index) {
-    this.taskCategory = this.categories[index];
+  selectCategory(item) {
+    this.taskCategory = item;
   }
 
   async dismiss() {

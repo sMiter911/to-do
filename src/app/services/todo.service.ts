@@ -151,7 +151,10 @@ export class TodoService {
     this._categories.next(data);
   }
 
-  async getCategory(id) {
-    console.log(id);
+  async deleteCategory(category) {
+    const { data, error } = await this.supabase
+      .from('categories')
+      .delete()
+      .eq('id', category.id);
   }
 }

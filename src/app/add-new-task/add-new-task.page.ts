@@ -34,10 +34,9 @@ export class AddNewTaskPage implements OnInit {
     this.todoService.getAllCategories();
   }
 
-  selectCategory(index) {
-    console.log(index);
-    console.log(this.categories);
-    this.taskCategory = this.categories[index];
+  selectCategory(item) {
+    console.log(item);
+    this.taskCategory = item;
   }
 
   async addTask() {
