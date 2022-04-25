@@ -28,7 +28,7 @@ export class AddCategoryPage implements OnInit {
   }
 
   async getAllCategories() {
-    this.todoService.getAllCategories();
+    await this.todoService.getAllCategories();
   }
 
   async addCategory() {
@@ -37,12 +37,12 @@ export class AddCategoryPage implements OnInit {
   }
 
   async deleteCategory(item) {
-    console.log(item);
-    this.todoService.deleteCategory(item);
+    await this.todoService.deleteCategory(item);
     this.getAllCategories();
   }
 
-  async deleteCategories(index) {
+  async deleteCategories() {
+    this.todoService.deleteCategories();
     this.dismiss();
   }
 }

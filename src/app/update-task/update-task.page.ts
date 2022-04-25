@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { AddCategoryPage } from '../add-category/add-category.page';
 import { TodoService } from '../services/todo.service';
 
 @Component({
@@ -57,5 +58,17 @@ export class UpdateTaskPage implements OnInit {
     };
     await this.todoService.updateTask(this.taskObject);
     this.dismiss();
+  }
+
+  async addCategory() {
+    const modal = await this.modalCtrl.create({
+      component: AddCategoryPage,
+    });
+
+    modal.onDidDismiss().then(() => {
+      this.getAllCategories();
+    });
+
+    return await modal.present();
   }
 }

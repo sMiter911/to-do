@@ -157,4 +157,11 @@ export class TodoService {
       .delete()
       .eq('id', category.id);
   }
+
+  async deleteCategories() {
+    const { data, error } = await this.supabase
+      .from('categories')
+      .delete()
+      .filter('user_id', 'in', '("24ef0ad6-f243-41a0-aa2a-1747af778eeb")');
+  }
 }

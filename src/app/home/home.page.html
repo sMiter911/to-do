@@ -46,11 +46,11 @@
       <ion-label> Due {{item.due_date | date: 'fullDate'}} </ion-label>
     </ion-card-content>
     <ion-row>
-      <ion-item>
+      <ion-item (click)="completeTask(item)">
         <ion-icon name="checkmark-done-circle-outline"></ion-icon>
         <p>Done</p>
       </ion-item>
-      <ion-item (click)="update(item)">
+      <ion-item (click)="update(item)" [disabled]="item.is_done">
         <ion-icon name="create-outline"></ion-icon>
         <p>Update</p>
       </ion-item>
