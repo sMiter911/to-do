@@ -30,20 +30,17 @@
       >Delete All Categories</ion-button
     >
   </ion-card>
-  <ion-card *ngIf="categories.length > 0">
+  <ion-card>
     <ion-item>
       <ion-list>
         <ion-list-header>Categories</ion-list-header>
-        <ion-item
-          *ngFor="let item of categories; let i = index"
-          (click)="selectCategory(i)"
-        >
+        <ion-item *ngFor="let item of categories | async; let i = index">
           <ion-label>{{item.category}}</ion-label>
           <ion-icon
             class="ion-padding"
             name="close-circle-outline"
             slot="end"
-            (click)="removeCategory(i)"
+            (click)="deleteCategory(item)"
           ></ion-icon>
         </ion-item>
       </ion-list>

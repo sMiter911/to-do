@@ -41,12 +41,17 @@
       <span>{{taskCategory}}</span>
     </ion-item>
     <ion-item>
-      <ion-chip
-        *ngFor="let category of categories; let i = index"
-        (click)="selectCategory(i)"
-      >
-        <ion-label>{{category}}</ion-label>
-      </ion-chip>
+      <div part="chips">
+        <ion-chip
+          *ngFor="let category of categories | async; let i = index"
+          (click)="selectCategory(category.category)"
+        >
+          <ion-label>{{category.category}}</ion-label>
+        </ion-chip>
+        <ion-chip (click)="addCategory()"
+          ><ion-label>+Add Category</ion-label>
+        </ion-chip>
+      </div>
     </ion-item>
     <ion-button class="ion-margin" expand="block" (click)="addTask()"
       >Add</ion-button

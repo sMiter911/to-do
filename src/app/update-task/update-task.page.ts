@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { AddCategoryPage } from '../add-category/add-category.page';
 import { TodoService } from '../services/todo.service';
 
 @Component({
@@ -9,7 +11,7 @@ import { TodoService } from '../services/todo.service';
 })
 export class UpdateTaskPage implements OnInit {
   @Input() task;
-  categories = ['work', 'school', 'personal'];
+  categories = this.todoService.categories;
   taskName;
   taskDueDate;
   taskPriority;
@@ -19,21 +21,27 @@ export class UpdateTaskPage implements OnInit {
   constructor(
     public modalCtrl: ModalController,
     public todoService: TodoService
-  ) {}
+  ) {
+    this.getAllCategories();
+  }
 
   ngOnInit() {
     this.fillData();
   }
 
-  fillData() {
-    this.taskName = this.task.value.itemName;
-    this.taskDueDate = this.task.value.itemDueDate;
-    this.taskPriority = this.task.value.itemPriority;
-    this.taskCategory = this.task.value.itemCategory;
+  async getAllCategories() {
+    this.todoService.getAllCategories();
   }
 
-  selectCategory(index) {
-    this.taskCategory = this.categories[index];
+  fillData() {
+    this.taskName = this.task.task;
+    this.taskDueDate = this.task.due_date;
+    this.taskPriority = this.task.priority;
+    this.taskCategory = this.task.category;
+  }
+
+  selectCategory(item) {
+    this.taskCategory = item;
   }
 
   async dismiss() {
@@ -42,13 +50,25 @@ export class UpdateTaskPage implements OnInit {
 
   async updateTask() {
     this.taskObject = {
-      itemName: this.taskName,
-      itemDueDate: this.taskDueDate,
-      itemPriority: this.taskPriority,
-      itemCategory: this.taskCategory,
+      id: this.task.id,
+      task: this.taskName,
+      due_date: this.taskDueDate,
+      priority: this.taskPriority,
+      category: this.taskCategory,
     };
-    const uid = this.task.key;
-    await this.todoService.updateTask(uid, this.taskObject);
+    await this.todoService.updateTask(this.taskObject);
     this.dismiss();
+  }
+
+  async addCategory() {
+    const modal = await this.modalCtrl.create({
+      component: AddCategoryPage,
+    });
+
+    modal.onDidDismiss().then(() => {
+      this.getAllCategories();
+    });
+
+    return await modal.present();
   }
 }

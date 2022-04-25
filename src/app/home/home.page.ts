@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Component } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { AddCategoryPage } from '../add-category/add-category.page';
@@ -11,9 +12,18 @@ import { UpdateTaskPage } from '../update-task/update-task.page';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  todoList = [];
+  items = this.todoService.todos;
+  isDone = false;
 
   today: number = Date.now();
+  completedTask: {
+    id: any;
+    task: any;
+    due_date: any;
+    priority: any;
+    category: any;
+    is_done: boolean;
+  };
 
   constructor(
     public modalCtrl: ModalController,
@@ -47,11 +57,11 @@ export class HomePage {
   }
 
   getAllTasks() {
-    this.todoList = this.todoService.getAllTasks();
-    console.log(this.todoList);
+    this.todoService.getAllTasks();
   }
 
   async delete(key) {
+    console.log(key);
     await this.todoService.deleteTask(key);
     this.getAllTasks();
   }
@@ -66,5 +76,19 @@ export class HomePage {
     });
 
     return await modal.present();
+  }
+
+  async completeTask(item) {
+    this.isDone = !this.isDone;
+    this.completedTask = {
+      id: item.id,
+      task: item.task,
+      due_date: item.due_date,
+      priority: item.priority,
+      category: item.category,
+      is_done: this.isDone,
+    };
+    await this.todoService.updateTask(this.completedTask);
+    this.getAllTasks();
   }
 }
